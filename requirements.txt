@@ -1,0 +1,4 @@
+Flask
+Flask-Dropzone
+imageio
+numpy
