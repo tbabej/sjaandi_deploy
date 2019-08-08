@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block head %}
+    <title>Sjaandi Deploy</title>
+    {{ dropzone.load_css() }}
+{% endblock head %}
+
+{% block body %}
+    <div>
+        <h1>Unleash the Powers of AI and Make Yourself a Collage</h1>
+        <ul>
+            <li>Select images and click "Upload".</li>
+            <li>Up to 16 images can be uploaded.</li>
+            <li>Image size up to 3 MB.</li>
+        </ul>
+    </div>
+    {{ dropzone.create(action='/') }}
+    <button id="upload">Upload</button>
+    {{ dropzone.load_js() }}
+    {{ dropzone.config() }}
+{% endblock body %}
