@@ -17,5 +17,5 @@
     {{ dropzone.create(action='/') }}
     <button id="upload">Upload</button>
     {{ dropzone.load_js() }}
-    {{ dropzone.config() }}
+    {{ dropzone.config(custom_options="acceptedFiles: 'image/*', resizeWidth:160, resizeHeight:160,") }}
 {% endblock body %}

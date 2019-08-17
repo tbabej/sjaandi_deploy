@@ -42,12 +42,12 @@ def index():
         # TODO: set up logging instead of print statements
         print("CLEARED UPLOAD FOLDER")
     if request.method == 'POST':
-        # f: werkzeug.datastructures.FileStorage
         # TODO: handle cases with different images with the same name
+        # TODO: handle when size is too small - can't upscale currently
+        # f: werkzeug.datastructures.FileStorage
         for key, f in request.files.items():
             if key.startswith('file'):
                 # img = imageio.imread(f)
-                # print(f"IMAGE SHAPE: {img.shape}")
                 f.save(str(UPLOADS_DIR/f.filename))
                 print('RECEIVED AND SAVED AN IMAGE!')
     return render_template('index.html')
