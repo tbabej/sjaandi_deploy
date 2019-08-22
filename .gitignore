@@ -1,2 +1,16 @@
+# IDE folders
 .vscode
 .idea
+
+# Symlinked libraries
+/rasterfairy
+/src
+
+# User folders
+/static/users
+
+# Swap files
+*.swp
+
+# Dummy image for testing
+dummy.png
