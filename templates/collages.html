@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block head %}
+    <title>Your past collages.</title>
+{% endblock head %}
+
+{% block body %}
+    <h1>Behold! Below are your collages!</h1>
+    <ul>
+    {% for name in collages %}
+        <img src="{{ name }}" alt="A collage."><br>
+    {% endfor %}
+    </ul>
+{% endblock body %}
+
