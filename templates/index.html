@@ -10,10 +10,13 @@
         <h1>Unleash the Powers of AI and Make Yourself a Collage</h1>
         <ul>
             <li>Select images and click "Upload".</li>
-            <li>Up to 16 images can be uploaded.</li>
+            <li>Up to 50 images can be uploaded.</li>
             <li>Image size up to 3 MB.</li>
         </ul>
     </div>
+{#    <div>#}
+{#        <h1>Unique identifier: {{ user_id }}</h1>#}
+{#    </div>#}
     {{ dropzone.create(action='/') }}
     <button id="upload">Upload</button>
     {{ dropzone.load_js() }}
