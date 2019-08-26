@@ -13,7 +13,8 @@ from flask_dropzone import Dropzone
 import imageio
 import numpy as np
 
-from sjaandi.usecases.mvp import *
+from sjaandi import VisualSearchEngine
+from sjaandi import get_data
 
 
 BASEDIR: Path = Path(__file__).resolve().parents[0]
@@ -71,7 +72,7 @@ def make_collage(user: str, data_path: str):
     :param data_path: stores images to make the collage
     :return:
     """
-    data = data_for_activations(data_path)
+    data = get_data(data_path)
     engine = VisualSearchEngine(data)
     new_collage = engine.make_collage()
     save_folder: Path = USERS_DIR/user

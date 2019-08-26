@@ -4,3 +4,5 @@ imageio
 numpy
 rasterfairy-py3
 sjaandi
+flask_session
+redis
