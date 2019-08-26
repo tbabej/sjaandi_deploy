@@ -72,8 +72,7 @@ def make_collage(user: str, data_path: str):
     :param data_path: stores images to make the collage
     :return:
     """
-    data = get_data(data_path)
-    engine = VisualSearchEngine(data)
+    engine = VisualSearchEngine(data_path)
     new_collage = engine.make_collage()
     save_folder: Path = USERS_DIR/user
     if not save_folder.exists():
