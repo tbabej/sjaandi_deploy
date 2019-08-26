@@ -2,3 +2,5 @@ Flask
 Flask-Dropzone
 imageio
 numpy
+rasterfairy-py3
+sjaandi
