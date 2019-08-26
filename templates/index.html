@@ -6,19 +6,28 @@
 {% endblock head %}
 
 {% block body %}
-    <div>
+
+    <div class="page-header">
         <h1>Unleash the Powers of AI and Make Yourself a Collage</h1>
+    </div>
+    <div class="jumbotron">
         <ul>
             <li>Select images and click "Upload".</li>
-            <li>Up to 50 images can be uploaded.</li>
-            <li>Image size up to 3 MB.</li>
+            <li>Up to {{ max_images }} images can be uploaded.</li>
+            <li>Image size up to {{ max_file_size }} MB.</li>
         </ul>
+        <p>
+            {{ dropzone.create(action='/') }}
+        </p>
+        <p>
+            <button id="upload" class="btn btn-primary btn-lg" type="submit">Upload</button>
+        </p>
     </div>
-{#    <div>#}
-{#        <h1>Unique identifier: {{ user_id }}</h1>#}
-{#    </div>#}
-    {{ dropzone.create(action='/') }}
-    <button id="upload">Upload</button>
+
     {{ dropzone.load_js() }}
     {{ dropzone.config(custom_options="acceptedFiles: 'image/*', resizeWidth:160, resizeHeight:160,") }}
+    {#    <div>#}
+    {#        <h1>Unique identifier: {{ user_id }}</h1>#}
+    {#    </div>#}
+
 {% endblock body %}

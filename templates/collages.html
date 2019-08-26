@@ -5,11 +5,13 @@
 {% endblock head %}
 
 {% block body %}
-    <h1>Behold! Below are your collages!</h1>
+    <div class="page-header">
+        <h1>Behold! Below are your collages!</h1>
+    </div>
     <ul>
-    {% for name in collages %}
-        <img src="{{ name }}" alt="A collage."><br>
-    {% endfor %}
+        {% for name in collages %}
+            <img src="{{ name }}" class="img-fluid" alt="A collage."><br>
+        {% endfor %}
     </ul>
 {% endblock body %}
 

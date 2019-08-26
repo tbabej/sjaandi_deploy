@@ -13,7 +13,7 @@ from flask_dropzone import Dropzone
 import imageio
 import numpy as np
 
-from src.usecases.mvp import *
+from sjaandi.usecases.mvp import *
 
 
 BASEDIR: Path = Path(__file__).resolve().parents[0]
@@ -32,8 +32,8 @@ app.config.update(
     # UPLOADED_PATH=os.path.join(BASEDIR, 'uploads'), # possibly unnecessary
     # Flask-Dropzone config:
     DROPZONE_ALLOWED_FILE_TYPE='image',
-    DROPZONE_MAX_FILE_SIZE=3,
-    DROPZONE_MAX_FILES=50,
+    DROPZONE_MAX_FILE_SIZE=5,
+    DROPZONE_MAX_FILES=100,
     DROPZONE_UPLOAD_ON_CLICK=True,
     DROPZONE_REDIRECT_VIEW='collage',
 )
@@ -116,7 +116,9 @@ def index():
             # make_dummy_collage(user_id, tempdir)
             make_collage(user_id, tempdir)
             print("COLLAGE MADE!")
-    return render_template('index.html')
+    return render_template('index.html',
+                           max_images=app.config['DROPZONE_MAX_FILES'],
+                           max_file_size=app.config['DROPZONE_MAX_FILE_SIZE'])
 
 
 @app.route('/collage')
