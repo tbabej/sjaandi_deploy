@@ -2,6 +2,7 @@ import os
 from pathlib import Path
 import shutil
 import tempfile
+from typing import List
 import uuid
 
 from flask import Flask
@@ -81,6 +82,23 @@ def make_collage(user_id: str, data_path: str):
     imageio.imwrite(save_path, new_collage)
 
 
+def sort_from_new_to_old(file_path_list: List[str]) -> List[str]:
+    """
+    Sort file paths from newest to oldest.
+
+    Uses modification date as sorting criterion.
+
+    :param file_path_list: list
+    :return:
+    """
+
+    # all paths must exist
+    if not all(map(os.path.exists, file_path_list)):
+        raise FileNotFoundError("Some of the files don't exist!")
+
+    return sorted(file_path_list, key=lambda f: os.path.getmtime(f), reverse=True)
+
+
 def handle_user() -> str:
     """
     Handle user.
@@ -154,10 +172,14 @@ def collage():
     """
     if 'user' in session:
         user_path = USERS_DIR/session['user']
+
+        # only keep `.png` files
+        sorted_file_paths = sort_from_new_to_old([str(f) for f in user_path.iterdir() if str(f).endswith('.png')])
+
         # only keep path after 'static/`; it will be used with url_for('static')
-        collages = [str(f).split('static/')[1] for f in user_path.iterdir() if str(f).endswith('.png')]
-        print(collages)
-        return render_template('collages.html', collages=collages)
+        collages_paths = [str(f).split('static/')[1] for f in sorted_file_paths]
+
+        return render_template('collages.html', collages=collages_paths)
     else:
         return "<h1>You don't have any collages yet.</h1>"
 
