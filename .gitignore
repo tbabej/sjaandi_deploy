@@ -8,9 +8,13 @@
 
 # User folders
 /static/users
+users
 
 # Swap files
 *.swp
 
 # Dummy image for testing
 dummy.png
+
+# Notebooks
+*.ipynb

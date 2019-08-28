@@ -52,35 +52,60 @@ def make_dummy_collage(username: str, folder: str):
     :param folder: stores images to make the collage
     :return: None
     """
+
     DUMMY_IMAGE_PATH = 'dummy.png'
     img = imageio.imread(DUMMY_IMAGE_PATH)[:,:,:3]
     print(type(img))
     save_folder: Path = USERS_DIR / username
     if not save_folder.exists():
         print("CREATING NEW USER'S DIRECTORY")
-        os.makedirs(save_folder)
+        os.makedirs(str(save_folder))  # accepts str, not Path
     filename = str(uuid.uuid4()) + '.png'
     save_path = save_folder/filename
     imageio.imwrite(save_path, img)
 
 
-def make_collage(user: str, data_path: str):
+def make_collage(user_id: str, data_path: str):
     """
     Make and save collage into user folder.
 
-    :param user: unique user id
+    :param user_id: unique user id
     :param data_path: stores images to make the collage
     :return:
     """
-    engine = VisualSearchEngine(data_path)
-    new_collage = engine.make_collage()
-    save_folder: Path = USERS_DIR/user
-    if not save_folder.exists():
-        print("CREATING NEW USER'S DIRECTORY")
-        os.makedirs(save_folder)
+
+    new_collage = VisualSearchEngine(data_path).make_collage()
+    save_folder: Path = USERS_DIR / user_id
     filename = str(uuid.uuid4()) + '.png'
     save_path = save_folder/filename
     imageio.imwrite(save_path, new_collage)
+
+
+def handle_user() -> str:
+    """
+    Handle user.
+
+    Create a unique user_id if user is new.
+    Create a user directory if it doesn't exist.
+
+    :return: user id
+    """
+
+    if 'user' not in session:
+        print('Creating new user.')
+        user_id = str(uuid.uuid4())
+        session['user'] = user_id
+    else:
+        print('Existing user.')
+        user_id = session['user']
+
+    # handle user directory
+    user_dir = USERS_DIR / user_id
+    if not user_dir.exists():
+        print("CREATING NEW USER'S DIRECTORY")
+        os.makedirs(user_dir)
+
+    return user_id
 
 
 @app.route('/', methods=['POST', 'GET'])
@@ -92,28 +117,24 @@ def index():
     4. if new user, make folder for collages, if old user, folder already exists
     5. make collage
     6. save collage to user folder
+
+    :return: rendered home page template
     """
+
+    # handle users regardless of the method
+    user_id = handle_user()
+
     if request.method == 'GET':
         pass
     elif request.method == 'POST':
-        if 'user' not in session:
-            print('Creating new user.')
-            user_id = str(uuid.uuid4())
-            session['user'] = user_id
-        else:
-            print('Existing user.')
-            user_id = session['user']
         # TODO: handle cases with different images with the same name
-        # TODO: handle when size is too small - can't upscale currently
-        # f: werkzeug.datastructures.FileStorage
+        # f is werkzeug.datastructures.FileStorage
         with tempfile.TemporaryDirectory() as tempdir:
             for key, f in request.files.items():
                 if key.startswith('file'):
-                    # img = imageio.imread(f)
                     f.save(os.path.join(tempdir, f.filename))
                     print('RECEIVED AND SAVED AN IMAGE!')
             print("ALL IMAGES UPLOADED.")
-            # make_dummy_collage(user_id, tempdir)
             make_collage(user_id, tempdir)
             print("COLLAGE MADE!")
     return render_template('index.html',
@@ -123,9 +144,18 @@ def index():
 
 @app.route('/collage')
 def collage():
+    """
+    Present all existing user's collages.
+
+    Loop through existing files in user's directory and keep only .png
+    Pass their paths to `collages.html` template.
+
+    :return: rendered collages template
+    """
     if 'user' in session:
         user_path = USERS_DIR/session['user']
-        collages = [str(f).split('sjaandi_deploy/')[1] for f in user_path.iterdir()]
+        # only keep path after 'static/`; it will be used with url_for('static')
+        collages = [str(f).split('static/')[1] for f in user_path.iterdir() if str(f).endswith('.png')]
         print(collages)
         return render_template('collages.html', collages=collages)
     else:
@@ -134,8 +164,14 @@ def collage():
 
 @app.route('/user')
 def user():
+    """
+    Inform the user of their unique user id.
+
+    :return: information about the user id
+    """
+
     if 'user' in session:
-        return f"Your user id is: {session['user']}"
+        return f"<h1>Your user id is: {session['user']}</h1>"
     else:
         return "This is a new user."
 

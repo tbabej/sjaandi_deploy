@@ -10,7 +10,7 @@
     </div>
     <ul>
         {% for name in collages %}
-            <img src="{{ name }}" class="img-fluid" alt="A collage."><br>
+            <img src="{{ url_for("static", filename=name) }}" class="img-fluid collage-image" alt="A collage."><br>
         {% endfor %}
     </ul>
 {% endblock body %}
