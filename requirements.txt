@@ -1,8 +1,13 @@
-Flask
-Flask-Dropzone
-imageio
+# dev
+pytest
+selenium
+
+# prod
 numpy
+imageio
 rasterfairy-py3
 sjaandi
+Flask
+Flask-Dropzone
 flask_session
 redis
