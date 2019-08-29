@@ -1,0 +1,21 @@
+.page-header {
+    text-align: center;
+    margin: 20px 0px 30px 0px;
+}
+
+.collage-container {
+    /*background-color: beige;*/
+    margin-bottom: 10px;
+    padding-top: 10px;
+    padding-right: 10px;
+    padding-left: 10px;
+    padding-bottom: 10px;
+}
+
+.img-fluid {
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    padding: 0px;
+}
+

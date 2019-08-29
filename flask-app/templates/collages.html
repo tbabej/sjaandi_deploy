@@ -5,13 +5,15 @@
 {% endblock head %}
 
 {% block body %}
-    <div class="page-header">
-        <h1>Behold! Below are your collages!</h1>
+    <div class="container-fluid">
+        <div class="page-header">
+            <h1 class="display-4">Your Collages</h1>
+        </div>
     </div>
-    <ul>
-        {% for name in collages %}
-            <img src="{{ url_for("static", filename=name) }}" class="img-fluid collage-image" alt="A collage."><br>
-        {% endfor %}
-    </ul>
+    <div class="jumbotron collage-container">
+    {% for name in collages %}
+            <img src="{{ url_for("static", filename=name) }}" class="img-fluid" alt="A collage."><br>
+    {% endfor %}
+    </div>
 {% endblock body %}
 
