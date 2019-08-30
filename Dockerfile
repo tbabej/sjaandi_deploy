@@ -28,9 +28,7 @@ RUN sudo pip install -r requirements.txt
 # copy flask source
 RUN sudo mkdir /flask_app
 ADD flask_app /flask_app
-RUN ls
-RUN ls /flask_app
-RUN ls /flask_app/static
+RUN sudo mkdir /flask_app/static/users
 RUN sudo chown -R circleci:circleci /flask_app/static/users/
 
 ENV FLASK_APP flask_app
