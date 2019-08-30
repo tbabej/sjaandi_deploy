@@ -1,0 +1,72 @@
+# Python CircleCI 2.0 configuration file
+#
+# Check https://circleci.com/docs/2.0/language-python/ for more details
+#
+version: 2
+jobs:
+  build:
+    docker:
+      # specify the version you desire here
+      # use `-browsers` prefix for selenium tests, e.g. `3.6.1-browsers`
+      - image: circleci/python:3.6-buster-browsers
+
+    working_directory: ~/sjaandi_deploy
+
+    steps:
+      - checkout
+
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "requirements.txt" }}
+            # no fallback
+
+      - run:
+          name: Install Pre-Dependencies
+          command: |
+            sudo apt-get -y install libc-dev
+            sudo apt-get -y install build-essential
+            sudo pip install -U pip
+
+      - run:
+          name: Install Testing Dependencies
+          command: |
+            python3 -m venv venv
+            . venv/bin/activate
+            pip install -r requirements-circleci.txt
+
+      - run:
+          name: Install Docker Compose
+          command: |
+            curl -L https://github.com/docker/compose/releases/download/1.19.0/docker-compose-`uname -s`-`uname -m` > ~/docker-compose
+            chmod +x ~/docker-compose
+            sudo mv ~/docker-compose /usr/local/bin/docker-compose
+
+      - run:
+          name: Build And Spin Up Flask App
+          command: |
+            docker-compose up -d
+
+      - save_cache:
+          paths:
+            - ./venv
+          key: v1-dependencies-{{ checksum "requirements.txt" }}
+
+      # run tests!
+      - run:
+          name: Run Tests
+          command: |
+            . venv/bin/activate
+            coverage run --source=./flask_app -m pytest tests/
+            coverage xml
+#            coveralls
+
+      - store_artifacts:
+          path: test-reports
+          destination: test-reports
+
+workflows:
+  version: 2
+  build_workflow:
+    jobs:
+      - build
