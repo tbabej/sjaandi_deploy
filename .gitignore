@@ -20,3 +20,4 @@ dummy.png
 *.ipynb
 __pycache__
 notebooks
+.coverage
