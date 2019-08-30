@@ -49,6 +49,7 @@ jobs:
           name: Build And Spin Up Flask App
           command: |
             docker-compose up -d
+            docker ps
 
       - save_cache:
           paths:
