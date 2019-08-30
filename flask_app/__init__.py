@@ -13,6 +13,7 @@ from flask_session import Session
 from flask_dropzone import Dropzone
 import imageio
 import numpy as np
+import redis
 
 from sjaandi import VisualSearchEngine
 from sjaandi import get_data
@@ -112,7 +113,11 @@ def create_app():
     app.config.from_object(__name__)
 
     # Check Configuration section for more details
+    # And here: http://codeomitted.com/flask-session-aws-redis/
+    # From here: https://pythonhosted.org/Flask-Session/
     app.config['SESSION_TYPE'] = 'redis'
+    # Note: to work locally, 'redis' should be pointing to 127.0.0.1 in the hosts file
+    app.config['SESSION_REDIS'] = redis.Redis(host='redis', port=6379)
     Session(app)
 
     app.config.update(
