@@ -59,7 +59,7 @@ jobs:
           name: Run Tests
           command: |
             . venv/bin/activate
-            coverage run --source=./flask_app -m pytest tests/
+            coverage run --source=./flask_app -m pytest tests/ -svv
             coverage xml
 #            coveralls
 

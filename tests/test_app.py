@@ -18,7 +18,7 @@ class InvalidParameterValueError(Exception):
     pass
 
 
-APP_ADDRESS = 'http://localhost:5000/'
+APP_ADDRESS = 'http://0.0.0.0:5000/'
 
 
 def save_random_image(full_name: str,
@@ -119,6 +119,7 @@ def test_true():
 
 def test_get_homepage(browser_headed: Chrome):
     browser_headed.get(APP_ADDRESS)
+    assert browser_headed.current_url == APP_ADDRESS
 
 def test_click_upload_and_nothing_happens(browser_headed: Chrome):
     browser_headed.get(APP_ADDRESS)
