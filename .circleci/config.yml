@@ -63,6 +63,7 @@ jobs:
             . venv/bin/activate
             coverage run --source=./flask_app -m pytest tests/ -svv
             coverage xml
+            docker-compose logs
 #            coveralls
 
       - store_artifacts:
