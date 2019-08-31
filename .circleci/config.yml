@@ -61,10 +61,14 @@ jobs:
           name: Run Tests
           command: |
             . venv/bin/activate
-            coverage run --source=./flask_app -m pytest tests/ -svv
+            coverage run --source=./flask_app -m pytest tests/ -svv || docker-compose logs
             coverage xml
-            docker-compose logs
 #            coveralls
+#
+      - run:
+          name: Get logs
+          command: |
+            docker-compose logs
 
       - store_artifacts:
           path: test-reports
